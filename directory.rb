@@ -6,14 +6,14 @@ def input_students
   # create an empty array
   @students = []
   # get the first name
-  name = Sgets.chomp
+  name = STDIN.gets.chomp
   # while the name is not empty, repeat this code
   while !name.empty? do
     # add the student hash to the array
     @students << {name: name, cohort: :november}
     puts "Now we have #{@students.count} students"
     # Get another name
-    name = Sgets.chomp
+    name = STDIN.gets.chomp
   end
   # return the array of students
   @students
@@ -74,7 +74,9 @@ def save_students
     csv_line = student_data.join(",")
     file.puts csv_line
   end
+  @students = @sudents.uniq
   file.close
+  puts "Saved #{@students.length} students to file"
 end
 
 def load_Students(filename = "students.csv")
@@ -82,6 +84,7 @@ def load_Students(filename = "students.csv")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym}
+    @students = @students.uniq
   end
   file.close
 end
