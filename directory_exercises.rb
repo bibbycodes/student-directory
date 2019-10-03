@@ -1,25 +1,9 @@
+# question 6 used center function for 
 $center_amount = 200
 
-# create array of student names
-def input_students_info
-  puts "Please enter the students age".center($center_amount)
-  age = gets.chomp
-  puts "Please enter the entrance exam score".center($center_amount)
-  score = gets.chomp
-  puts "Please enter the students country of birth".center($center_amount)
-  nationality = gets.chomp
-  puts "What cohort will this student be attending?".center($center_amount)
-  cohort = gets.chomp
-  return {
-    age: age,
-    score: score,
-    nationality: nationality,
-    cohort: cohort
-  }
-end
-
+# Question 10 in input students
 def input_students
-  puts "Please enter the names of the students".center($center_amount)
+  puts "Please enter the name of the student".center($center_amount)
   puts "To Finish, just hit return twice".center($center_amount)
   # create an empty array
   students = []
@@ -30,7 +14,7 @@ def input_students
     details = input_students_info
     # add the student hash to the array
     students << {name: name, cohort: details[:cohort], age: details[:age], score: details[:score], nationality: details[:nationality] }
-    puts "Now we have #{students.count} #{students.count > 1 ? "students" : "student"}. Hit Return to end data entry or type in the next students name".center($center_amount)
+    puts "Now we have #{students.count} #{students.count > 1 ? "students" : "student"}. Hit Return to end data entry or type in the next student's name".center($center_amount)
     # Get another name
     name = gets.chomp
   end
@@ -43,11 +27,103 @@ def print_header
   puts "--------------------------------".center($center_amount)
 end
 
+# Question 1 & 12
 def print(students)
   if students.count > 0
     students.each_with_index do |student, index|
       puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)".center($center_amount)
     end
+  end
+end
+
+# Question 2
+def print_starting_with(letter, students)
+  students.each_with_index do |student|
+    first_letter = student[:name][0]
+    if first_letter.downcase == letter.downcase
+      puts "#{student[:name]} (#{student[:cohort]} cohort)".center($center_amount)
+    end
+  end
+end
+
+# Question 3
+def print_shorter_than(number = 12, students)
+  students.each do |student|
+    name = student[:name]
+    if (name.length < number)
+      puts "#{student[:name]} (#{student[:cohort]} cohort)".center($center_amount)
+    end
+  end
+end
+
+
+# Question 4
+def print_while(students)
+  i = 0 
+  while i < students.length do
+    student = students[i]
+    puts "#{student[:name]} (#{student[:cohort]} cohort)".center($center_amount)
+    i += 1
+  end
+end
+
+# Question 4
+def print_until(students)
+  i = 0 
+  until i == students.length do
+    student = students[i]
+    puts "#{student[:name]} (#{student[:cohort]} cohort)".center($center_amount)
+    i += 1
+  end
+end
+
+# Question 5 & 7 (cohort)
+def input_students_info
+  puts "Please enter the students age".center($center_amount)
+  age = gets.chomp
+  puts "Please enter the entrance exam score".center($center_amount)
+  score = gets.chomp
+  puts "Please enter the students country of birth".center($center_amount)
+  nationality = gets.chomp
+  puts "What cohort will this student be attending?".center($center_amount)
+  cohort = gets.chomp
+  
+  return {
+    age: age,
+    score: score,
+    nationality: nationality,
+    cohort: cohort
+  }
+  
+end
+
+# Question 8
+def group_by_cohort(students)
+  # Get List of different cohorts
+  cohort_names = []
+  groups = []
+  students.each { |student|
+    cohort_names.push(student[:cohort])
+  }
+  cohort_names = cohort_names.uniq
+  
+  # For each cohort
+  for cohort in cohort_names
+    # Select Cohort and push to groups
+    group = students.select {|student|
+      student[:cohort] == cohort
+    }
+    groups.push(group)
+  end
+  return groups
+end
+
+
+def print_details_by(groups)
+  for group in groups
+    puts "#{group[0][:cohort]} cohort students:".center($center_amount - $center_amount / 2)
+    puts "\n"
+    print_details_of(group)
   end
 end
 
@@ -78,72 +154,9 @@ def print_details_of(students)
   end
 end
 
-def group_by_cohort(students)
-  # Get List of different cohorts
-  cohort_names = []
-  groups = []
-  students.each { |student|
-    cohort_names.push(student[:cohort])
-  }
-  cohort_names = cohort_names.uniq
-
-  # For each cohort
-  for cohort in cohort_names
-    # Select Cohort and push to groups
-    group = students.select {|student|
-      student[:cohort] == cohort
-    }
-    groups.push(group)
-  end
-  return groups
-end
-
-def print_starting_with(letter, students)
-  students.each_with_index do |student|
-    first_letter = student[:name][0]
-    if first_letter.downcase == letter.downcase
-      puts "#{student[:name]} (#{student[:cohort]} cohort)".center($center_amount)
-    end
-  end
-end
-
-def print_shorter_than(number = 12, students)
-  students.each do |student|
-    name = student[:name]
-    if (name.length < number)
-      puts "#{student[:name]} (#{student[:cohort]} cohort)".center($center_amount)
-    end
-  end
-end
-
-def print_while(students)
-  i = 0 
-  while i < students.length do
-    student = students[i]
-    puts "#{student[:name]} (#{student[:cohort]} cohort)".center($center_amount)
-    i += 1
-  end
-end
-
-def print_until(students)
-  i = 0 
-  until i == students.length do
-    student = students[i]
-    puts "#{student[:name]} (#{student[:cohort]} cohort)".center($center_amount)
-    i += 1
-  end
-end
-
+# Question 9
 def print_footer(students)
   puts "Overall, we have #{students.count} great #{students.count > 1 ? "students" : "student"}".center($center_amount)
-end
-
-def print_details_by(groups)
-  for group in groups
-    puts "#{group[0][:cohort]} cohort students:".center($center_amount - $center_amount / 2)
-    puts "\n"
-    print_details_of(group)
-  end
 end
 
 students = input_students
