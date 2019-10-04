@@ -73,18 +73,29 @@ def process(selection)
 end
 
 def save_students
-  file = File.open("students.csv", "w")
+  puts "Please input a filename to save to"
+  filename = STDIN.gets.chomp
+  filename == "" ? "students.csv" : filename
+  file = File.open(filename, "w")
+
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
-  @students = @sudents.uniq
+
   file.close
   puts "Saved #{@students.length} students to file"
 end
 
 def load_Students(filename = "students.csv")
+  puts "Please input a filename to load from"
+  input_file_name = STDIN.gets.chomp
+
+  if input_file_name != ""
+    filename = input_file_name
+  end
+
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
