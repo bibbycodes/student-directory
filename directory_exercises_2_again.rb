@@ -1,3 +1,4 @@
+require 'csv'
 @students = []
 # create array of student names
 def input_students
@@ -76,13 +77,12 @@ def save_students
   puts "Please input a filename to save to"
   filename = STDIN.gets.chomp
   filename == "" ? "students.csv" : filename
-  File.open(filename, "w") { |file|
+
+  CSV.open(filename, "wb") do |csv|
     @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+      csv << [student[:name], student[:cohort]]
+    end
   end
-  }
   puts "Saved #{@students.length} students to file"
 end
 
@@ -94,12 +94,12 @@ def load_Students(filename = "students.csv")
     filename = input_file_name
   end
 
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
+  csv_file = CSV.read(filename)
+
+  csv_file.each do |line|
+    name, cohort = line
     append_to_students_array(name, cohort)
   end
-  file.close
 end
 
 def try_load_students
