@@ -76,15 +76,13 @@ def save_students
   puts "Please input a filename to save to"
   filename = STDIN.gets.chomp
   filename == "" ? "students.csv" : filename
-  file = File.open(filename, "w")
-
-  @students.each do |student|
+  File.open(filename, "w") { |file|
+    @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
-
-  file.close
+  }
   puts "Saved #{@students.length} students to file"
 end
 
@@ -106,6 +104,7 @@ end
 
 def try_load_students
   ARGV.first ? filename = ARGV.first : filename = "students.csv"
+  puts filename
   return if filename.nil?
   if File.exists?(filename)
     load_Students(filename)
